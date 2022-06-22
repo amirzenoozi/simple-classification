@@ -13,6 +13,7 @@ nb_train_samples = 400
 nb_validation_samples = 100
 epochs = 10
 batch_size = 16
+classes_number = 2 # Cars and Planes
 
 def main():
     if K.image_data_format() == 'channels_first':
@@ -38,7 +39,7 @@ def main():
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
     # 1 For binary classification and CLASS_NUMBER for categorical classification
-    model.add(Dense(2))
+    model.add(Dense(classes_number))
     model.add(Activation('sigmoid'))
 
     # It can be 'categorical_crossentropy' or 'binary_crossentropy'
