@@ -37,10 +37,12 @@ def main():
     model.add(Dense(64))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(1))
+    # 1 For binary classification and CLASS_NUMBER for categorical classification
+    model.add(Dense(2))
     model.add(Activation('sigmoid'))
 
-    model.compile(loss='binary_crossentropy',optimizer='rmsprop',metrics=['accuracy'])
+    # It can be 'categorical_crossentropy' or 'binary_crossentropy'
+    model.compile(loss='categorical_crossentropy',optimizer='rmsprop',metrics=['accuracy'])
 
     train_datagen = ImageDataGenerator(rescale=1. / 255, shear_range=0.2, zoom_range=0.2, horizontal_flip=True)
     test_datagen = ImageDataGenerator(rescale=1. / 255)
@@ -48,14 +50,14 @@ def main():
         train_data_dir,
         target_size=(img_width, img_height),
         batch_size=batch_size,
-        class_mode='binary'
+        class_mode='categorical' # binary | categorical | sparse | input | None
     )
     
     validation_generator = test_datagen.flow_from_directory(
         validation_data_dir,
         target_size=(img_width, img_height),
         batch_size=batch_size,
-        class_mode='binary'
+        class_mode='categorical' # binary | categorical | sparse | input | None
     )
     
     model.fit_generator(
@@ -66,7 +68,7 @@ def main():
         validation_steps=nb_validation_samples // batch_size
     )
 
-    model.save('vehicle_model_saved.h5')
+    model.save('model\categorical_vehicle_model_saved.h5')
 
 if __name__ == '__main__':
     main()
